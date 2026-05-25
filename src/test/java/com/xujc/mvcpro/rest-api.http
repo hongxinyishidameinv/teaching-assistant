@@ -1,0 +1,98 @@
+@baseUrl = http://localhost:8080
+
+### ==============================================
+### 【1】GET 请求：查询用户（Read）
+### ==============================================
+### GET 获取所有用户列表
+GET {{baseUrl}}/user/userList
+Accept: application/json
+
+### GET 根据用户ID查询单个用户 - 存在的情况
+GET {{baseUrl}}/user/1
+Accept: application/json
+
+### GET 根据用户ID查询单个用户 - 不存在的情况（返回404）
+GET {{baseUrl}}/user/99999
+Accept: application/json
+
+### ==============================================
+### 【2】POST 请求：创建用户（Create）
+### ==============================================
+### POST 新增用户 - 成功
+POST {{baseUrl}}/user/add
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "123456",
+  "email": "test@example.com",
+  "type": "student"
+}
+
+### POST 新增用户 - 用户名已存在（返回409）
+POST {{baseUrl}}/user/add
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "123456",
+  "email": "duplicate@example.com",
+  "type": "student"
+}
+
+### POST 新增用户 - 缺少用户名（返回400）
+POST {{baseUrl}}/user/add
+Content-Type: application/json
+
+{
+  "password": "123456",
+  "email": "no-username@example.com",
+  "type": "student"
+}
+
+### POST 新增用户 - 缺少密码（返回400）
+POST {{baseUrl}}/user/add
+Content-Type: application/json
+
+{
+  "username": "nopassword",
+  "email": "no-password@example.com",
+  "type": "student"
+}
+
+### ==============================================
+### 【3】PUT 请求：更新用户信息（Update）
+### ==============================================
+### PUT 更新用户信息 - 成功
+PUT {{baseUrl}}/user/1
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "new_password_123",
+  "email": "admin_updated@example.com",
+  "type": "teacher"
+}
+
+### PUT 更新不存在的用户（返回404）
+PUT {{baseUrl}}/user/99999
+Content-Type: application/json
+
+{
+  "username": "nonexistent",
+  "password": "123456",
+  "email": "nonexistent@example.com",
+  "type": "student"
+}
+
+### ==============================================
+### 【4】DELETE 请求：删除用户（Delete）
+### ==============================================
+### DELETE 删除用户 - 成功
+DELETE {{baseUrl}}/user/2
+Accept: application/json
+
+### DELETE 删除不存在的用户（返回404）
+DELETE {{baseUrl}}/user/99999
+Accept: application/json
+

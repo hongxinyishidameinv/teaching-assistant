@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>嘉庚学院管理系统</title>
+    <link href="/css/styles.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-600 bg-[length:400%_400%] animate-gradient min-h-screen font-sans">
+    <!-- 顶部标题栏 -->
+    <header class="bg-white/95 backdrop-blur-xl shadow-lg border-b border-white/20 fixed top-0 left-0 right-0 z-50">
+        <div class="flex items-center justify-between px-6 py-4">
+            <!-- Logo和系统名称 -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">
+                    嘉庚学院管理系统
+                </h1>
+            </div>
+
+            <!-- 右侧用户信息 -->
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-50 to-blue-50 rounded-xl border border-cyan-200">
+                    <div class="w-8 h-8 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-full flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <span class="text-gray-700 font-medium" id="currentUser">Admin</span>
+                </div>
+                <button onclick="logout()" class="px-4 py-2 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-xl hover:shadow-lg transition-all duration-300 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                    </svg>
+                    退出
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容区 -->
+    <div class="flex pt-20 min-h-screen">
+        <!-- 左侧侧边导航栏 -->
+        <aside class="w-64 bg-white/95 backdrop-blur-xl shadow-lg border-r border-white/20 fixed left-0 top-20 bottom-0 overflow-y-auto">
+            <nav class="p-4 space-y-2">
+                <!-- 用户管理 -->
+                <button onclick="switchTab('user')" id="tab-user" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <span class="font-medium">用户管理</span>
+                </button>
+
+                <!-- 课程管理 -->
+                <button onclick="switchTab('course')" id="tab-course" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-blue-50 text-gray-700 hover:text-cyan-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                    <span class="font-medium">课程管理</span>
+                </button>
+
+                <!-- 班级管理 -->
+                <button onclick="switchTab('class')" id="tab-class" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-blue-50 text-gray-700 hover:text-cyan-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                    <span class="font-medium">班级管理</span>
+                </button>
+
+                <!-- 测试管理 -->
+                <button onclick="switchTab('test')" id="tab-test" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-blue-50 text-gray-700 hover:text-cyan-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                    </svg>
+                    <span class="font-medium">测试管理</span>
+                </button>
+
+                <!-- 考勤管理 -->
+                <button onclick="switchTab('attendance')" id="tab-attendance" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-blue-50 text-gray-700 hover:text-cyan-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    <span class="font-medium">考勤管理</span>
+                </button>
+
+                <!-- 题库管理 -->
+                <button onclick="switchTab('question')" id="tab-question" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-blue-50 text-gray-700 hover:text-cyan-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span class="font-medium">题库管理</span>
+                </button>
+            </nav>
+        </aside>
+
+        <!-- 主内容区域 -->
+        <main class="flex-1 ml-64 p-6">
+            <!-- 用户管理页面 -->
+            <div id="content-user" class="content-section animate-fade-in">
+                <div class="bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl p-5 border border-white/20">
+                    <!-- 页面标题和操作按钮 -->
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h2 class="text-xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">用户管理</h2>
+                                <p class="text-gray-600 mt-0.5 text-sm">管理系统用户信息</p>
+                            </div>
+                            <div class="flex gap-3">
+                                <button onclick="batchDeleteUsers()" class="px-5 py-2 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-xl hover:shadow-lg transition-all duration-300 flex items-center gap-2 text-sm" id="batchDeleteBtn" disabled>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                    批量删除
+                                </button>
+                                <button onclick="showAddModal()" class="px-5 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl hover:shadow-lg transition-all duration-300 flex items-center gap-2 text-sm">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                    </svg>
+                                    添加用户
+                                </button>
+                            </div>
+                        </div>
+
+                    <!-- 搜索框 -->
+                    <div class="mb-4 flex gap-3">
+                        <div class="flex-1 relative">
+                            <input type="text" id="searchInput" placeholder="搜索用户名..." class="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none focus:ring-4 focus:ring-cyan-100 transition-all duration-300 text-sm">
+                            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        <button onclick="searchUsers()" class="px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl hover:shadow-lg transition-all duration-300 text-sm">
+                            搜索
+                        </button>
+                        <button onclick="clearSearch()" class="px-5 py-2.5 border-2 border-gray-200 text-gray-700 rounded-xl hover:border-cyan-500 hover:text-cyan-600 transition-all duration-300 text-sm">
+                            重置
+                        </button>
+                    </div>
+
+                    <!-- 用户列表表格 -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b-2 border-cyan-100">
+                                    <th class="text-left py-3 px-3 text-cyan-700 font-semibold text-sm">
+                                        <input type="checkbox" id="selectAll" onchange="toggleSelectAll()" class="w-4 h-4 text-cyan-600 border-gray-300 rounded focus:ring-cyan-500">
+                                    </th>
+                                    <th class="text-left py-3 px-3 text-cyan-700 font-semibold text-sm">ID</th>
+                                    <th class="text-left py-3 px-3 text-cyan-700 font-semibold text-sm">用户名</th>
+                                    <th class="text-left py-3 px-3 text-cyan-700 font-semibold text-sm">邮箱</th>
+                                    <th class="text-left py-3 px-3 text-cyan-700 font-semibold text-sm">用户类型</th>
+                                    <th class="text-left py-3 px-3 text-cyan-700 font-semibold text-sm">状态</th>
+                                    <th class="text-left py-3 px-3 text-cyan-700 font-semibold text-sm">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userTableBody">
+                                <!-- 数据将通过JavaScript动态填充 -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 分页 -->
+                    <div class="mt-4 flex items-center justify-between">
+                        <span class="text-gray-600 text-sm">共 <span id="totalUsers" class="font-semibold text-cyan-600">0</span> 条记录 | 当前第 <span id="currentPage" class="font-semibold text-cyan-600">1</span> / <span id="totalPages" class="font-semibold text-cyan-600">1</span> 页</span>
+                        <div id="pagination" class="flex gap-1.5">
+                            <!-- 分页按钮将通过JavaScript动态生成 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 其他页面占位 -->
+            <div id="content-course" class="content-section hidden animate-fade-in">
+                <div class="bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl p-12 border border-white/20 text-center">
+                    <div class="text-6xl mb-4">📚</div>
+                    <h2 class="text-2xl font-bold text-gray-700 mb-2">课程管理</h2>
+                    <p class="text-gray-500">功能开发中...</p>
+                </div>
+            </div>
+
+            <div id="content-class" class="content-section hidden animate-fade-in">
+                <div class="bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl p-12 border border-white/20 text-center">
+                    <div class="text-6xl mb-4">🏫</div>
+                    <h2 class="text-2xl font-bold text-gray-700 mb-2">班级管理</h2>
+                    <p class="text-gray-500">功能开发中...</p>
+                </div>
+            </div>
+
+            <div id="content-test" class="content-section hidden animate-fade-in">
+                <div class="bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl p-12 border border-white/20 text-center">
+                    <div class="text-6xl mb-4">📝</div>
+                    <h2 class="text-2xl font-bold text-gray-700 mb-2">测试管理</h2>
+                    <p class="text-gray-500">功能开发中...</p>
+                </div>
+            </div>
+
+            <div id="content-attendance" class="content-section hidden animate-fade-in">
+                <div class="bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl p-12 border border-white/20 text-center">
+                    <div class="text-6xl mb-4">✅</div>
+                    <h2 class="text-2xl font-bold text-gray-700 mb-2">考勤管理</h2>
+                    <p class="text-gray-500">功能开发中...</p>
+                </div>
+            </div>
+
+            <div id="content-question" class="content-section hidden animate-fade-in">
+                <div class="bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl p-12 border border-white/20 text-center">
+                    <div class="text-6xl mb-4">❓</div>
+                    <h2 class="text-2xl font-bold text-gray-700 mb-2">题库管理</h2>
+                    <p class="text-gray-500">功能开发中...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 用户操作模态框 -->
+    <div id="userModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden animate-scale-in border border-gray-200" style="background-color: #ffffff !important;">
+            <!-- 模态框头部 -->
+            <div class="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-cyan-500 to-blue-600">
+                <h3 id="modalTitle" class="text-lg font-semibold text-white">添加用户</h3>
+                <button onclick="closeModal()" class="text-white/80 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <!-- 模态框内容 -->
+            <form id="userForm" class="p-6 space-y-4">
+                <input type="hidden" id="userId">
+                <!-- 用户名 -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">用户名</label>
+                    <input type="text" id="username" class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none focus:ring-4 focus:ring-cyan-100 transition-all duration-300 text-sm" required>
+                </div>
+                <!-- 密码 -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">密码</label>
+                    <input type="password" id="password" class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none focus:ring-4 focus:ring-cyan-100 transition-all duration-300 text-sm" required>
+                </div>
+                <!-- 邮箱 -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">邮箱</label>
+                    <input type="email" id="email" class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none focus:ring-4 focus:ring-cyan-100 transition-all duration-300 text-sm" required>
+                </div>
+                <!-- 用户类型 -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">用户类型</label>
+                    <select id="userType" class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none focus:ring-4 focus:ring-cyan-100 transition-all duration-300 text-sm">
+                        <option value="0">管理员</option>
+                        <option value="1">教师</option>
+                        <option value="2">学生</option>
+                    </select>
+                </div>
+                <!-- 按钮组 -->
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="closeModal()" class="flex-1 px-4 py-2.5 border-2 border-gray-200 text-gray-700 rounded-xl hover:border-cyan-500 hover:text-cyan-600 transition-all duration-300 text-sm">
+                        取消
+                    </button>
+                    <button type="submit" class="flex-1 px-4 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl hover:shadow-lg transition-all duration-300 text-sm">
+                        保存
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 引入 Axios - 使用国内 BootCDN -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.6.2/axios.min.js"></script>
+    <!-- 如果 CDN 加载失败，使用本地文件 -->
+    <script>window.axios || document.write('<script src="/js/axios.min.js"><\/script>');</script>
+    <script>
+        // 分页相关变量
+        let users = [];
+        let currentPage = 1;
+        let pageSize = 15;
+        let totalPages = 1;
+        let totalRecords = 0;
+        let searchKeyword = '';
+
+        // 获取用户数据（分页）
+        async function fetchUsers(pageNum = 1, keyword = '') {
+            currentPage = pageNum;
+            searchKeyword = keyword;
+            
+            try {
+                let response;
+                if (keyword) {
+                    response = await axios.get(`/api/user/search/page?keyword=${encodeURIComponent(keyword)}&pageNum=${pageNum}&pageSize=${pageSize}`);
+                } else {
+                    response = await axios.get(`/api/user/page?pageNum=${pageNum}&pageSize=${pageSize}`);
+                }
+                
+                if (response.data.code === 200) {
+                    const data = response.data.data;
+                    users = data.data || [];
+                    totalPages = data.pages || 1;
+                    totalRecords = data.total || 0;
+                    currentPage = data.pageNum || 1;
+                    renderUserTable();
+                    renderPagination();
+                } else {
+                    users = [];
+                    totalPages = 1;
+                    totalRecords = 0;
+                    currentPage = 1;
+                    renderUserTable();
+                    renderPagination();
+                }
+            } catch (error) {
+                console.error('获取用户数据失败:', error);
+                alert('获取用户数据失败，请检查网络连接');
+            }
+        }
+
+        // 渲染用户表格
+        function renderUserTable() {
+            const tbody = document.getElementById('userTableBody');
+            const totalUsers = document.getElementById('totalUsers');
+            const currentPageEl = document.getElementById('currentPage');
+            const totalPagesEl = document.getElementById('totalPages');
+            
+            // 用户类型映射
+            const userTypeMap = {
+                '0': { text: '管理员', class: 'bg-purple-100 text-purple-700' },
+                '1': { text: '教师', class: 'bg-blue-100 text-blue-700' },
+                '2': { text: '学生', class: 'bg-green-100 text-green-700' }
+            };
+            
+            if (users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="py-8 text-center text-gray-500">暂无用户数据</td></tr>';
+            } else {
+                tbody.innerHTML = users.map(user => {
+                    const userTypeInfo = userTypeMap[user.type] || { text: user.type || '未知', class: 'bg-gray-100 text-gray-700' };
+                    const isEnabled = user.status === 1;
+                    return `
+                    <tr class="border-b border-gray-100 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-blue-50 transition-all duration-300">
+                        <td class="py-3 px-3">
+                            <input type="checkbox" class="userCheckbox" value="${user.uid}" onchange="updateBatchDeleteBtn()" class="w-4 h-4 text-cyan-600 border-gray-300 rounded focus:ring-cyan-500">
+                        </td>
+                        <td class="py-3 px-3 text-gray-700 text-sm">${user.uid}</td>
+                        <td class="py-3 px-3">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                    ${user.username ? user.username.charAt(0) : '?'}
+                                </div>
+                                <span class="text-gray-900 font-medium text-sm">${user.username || '未知'}</span>
+                            </div>
+                        </td>
+                        <td class="py-3 px-3 text-gray-600 text-sm">${user.email || '-'}</td>
+                        <td class="py-3 px-3">
+                            <span class="px-2 py-0.5 rounded-full text-xs font-medium ${userTypeInfo.class}">
+                                ${userTypeInfo.text}
+                            </span>
+                        </td>
+                        <td class="py-3 px-3">
+                            <button onclick="toggleUserStatus(${user.uid}, ${isEnabled ? 0 : 1})" class="px-2.5 py-1 rounded-lg text-xs font-medium transition-all duration-300 ${isEnabled ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-red-100 text-red-700 hover:bg-red-200'}">
+                                ${isEnabled ? '已启用' : '已禁用'}
+                            </button>
+                        </td>
+                        <td class="py-3 px-3">
+                            <div class="flex gap-1.5">
+                                <button onclick="showEditModal(${user.uid})" class="px-2.5 py-1 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg hover:shadow-md transition-all duration-300 text-xs">
+                                    编辑
+                                </button>
+                                <button onclick="deleteUser(${user.uid})" class="px-2.5 py-1 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-lg hover:shadow-md transition-all duration-300 text-xs">
+                                    删除
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    `;
+                }).join('');
+            }
+            
+            totalUsers.textContent = totalRecords;
+            currentPageEl.textContent = currentPage;
+            totalPagesEl.textContent = totalPages;
+        }
+
+        // 全选/取消全选
+        function toggleSelectAll() {
+            const selectAll = document.getElementById('selectAll');
+            const checkboxes = document.querySelectorAll('.userCheckbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAll.checked;
+            });
+            updateBatchDeleteBtn();
+        }
+
+        // 更新批量删除按钮状态
+        function updateBatchDeleteBtn() {
+            const checkboxes = document.querySelectorAll('.userCheckbox:checked');
+            const batchDeleteBtn = document.getElementById('batchDeleteBtn');
+            batchDeleteBtn.disabled = checkboxes.length === 0;
+            batchDeleteBtn.style.opacity = checkboxes.length === 0 ? '0.5' : '1';
+            batchDeleteBtn.style.cursor = checkboxes.length === 0 ? 'not-allowed' : 'pointer';
+        }
+
+        // 获取选中的用户ID列表
+        function getSelectedUserIds() {
+            const checkboxes = document.querySelectorAll('.userCheckbox:checked');
+            return Array.from(checkboxes).map(cb => parseInt(cb.value));
+        }
+
+        // 批量删除用户
+        async function batchDeleteUsers() {
+            const selectedIds = getSelectedUserIds();
+            if (selectedIds.length === 0) {
+                alert('请先选择要删除的用户');
+                return;
+            }
+            
+            if (!confirm(`确定要删除选中的 ${selectedIds.length} 个用户吗？此操作不可恢复！`)) {
+                return;
+            }
+            
+            try {
+                const response = await axios.delete('/api/user/batch', {
+                    data: selectedIds
+                });
+                
+                if (response.data.code === 200) {
+                    alert('批量删除成功');
+                    document.getElementById('selectAll').checked = false;
+                    updateBatchDeleteBtn();
+                    fetchUsers(currentPage, searchKeyword);
+                } else {
+                    alert('批量删除失败: ' + (response.data.message || '未知错误'));
+                }
+            } catch (error) {
+                console.error('批量删除失败:', error);
+                if (error.response && error.response.data) {
+                    alert(error.response.data.message || '批量删除失败');
+                } else {
+                    alert('批量删除失败，请检查网络连接');
+                }
+            }
+        }
+
+        // 切换用户状态
+        async function toggleUserStatus(uid, newStatus) {
+            const statusText = newStatus === 1 ? '启用' : '禁用';
+            if (!confirm(`确定要${statusText}该用户吗？`)) {
+                return;
+            }
+            
+            try {
+                const response = await axios.put(`/api/user/status?uid=${uid}&status=${newStatus}`);
+                
+                if (response.data.code === 200) {
+                    alert(response.data.message);
+                    fetchUsers(currentPage, searchKeyword);
+                } else {
+                    alert('操作失败: ' + (response.data.message || '未知错误'));
+                }
+            } catch (error) {
+                console.error('状态更新失败:', error);
+                if (error.response && error.response.data) {
+                    alert(error.response.data.message || '状态更新失败');
+                } else {
+                    alert('状态更新失败，请检查网络连接');
+                }
+            }
+        }
+
+        // 渲染分页导航
+        function renderPagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            
+            // 上一页按钮
+            const prevBtn = document.createElement('button');
+            prevBtn.className = `px-3 py-1.5 rounded-lg text-sm transition-all duration-300 ${currentPage <= 1 ? 'border-2 border-gray-200 text-gray-400 cursor-not-allowed' : 'border-2 border-gray-200 hover:border-cyan-500 hover:text-cyan-600'}`;
+            prevBtn.textContent = '上一页';
+            prevBtn.onclick = () => { if (currentPage > 1) fetchUsers(currentPage - 1, searchKeyword); };
+            pagination.appendChild(prevBtn);
+            
+            // 页码按钮
+            const maxVisible = 5;
+            let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+            let end = Math.min(totalPages, start + maxVisible - 1);
+            
+            if (end - start + 1 < maxVisible) {
+                start = Math.max(1, end - maxVisible + 1);
+            }
+            
+            for (let i = start; i <= end; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `px-3 py-1.5 rounded-lg text-sm transition-all duration-300 ${i === currentPage ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white' : 'border-2 border-gray-200 hover:border-cyan-500 hover:text-cyan-600'}`;
+                pageBtn.textContent = i;
+                pageBtn.onclick = () => fetchUsers(i, searchKeyword);
+                pagination.appendChild(pageBtn);
+            }
+            
+            // 下一页按钮
+            const nextBtn = document.createElement('button');
+            nextBtn.className = `px-3 py-1.5 rounded-lg text-sm transition-all duration-300 ${currentPage >= totalPages ? 'border-2 border-gray-200 text-gray-400 cursor-not-allowed' : 'border-2 border-gray-200 hover:border-cyan-500 hover:text-cyan-600'}`;
+            nextBtn.textContent = '下一页';
+            nextBtn.onclick = () => { if (currentPage < totalPages) fetchUsers(currentPage + 1, searchKeyword); };
+            pagination.appendChild(nextBtn);
+        }
+
+        // 切换标签页
+        function switchTab(tabName) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            document.getElementById(`content-${tabName}`).classList.remove('hidden');
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.className = 'nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-blue-50 text-gray-700 hover:text-cyan-600';
+            });
+            const activeNav = document.getElementById(`tab-${tabName}`);
+            activeNav.className = 'nav-item w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg';
+        }
+
+        // 退出登录
+        function logout() {
+            if (confirm('确定要退出登录吗？')) {
+                // 清除本地存储中的用户信息
+                localStorage.removeItem('currentUser');
+                window.location.href = '/index.html';
+            }
+        }
+
+        // 更新当前用户显示
+        function updateCurrentUser() {
+            const userInfo = localStorage.getItem('currentUser');
+            console.log('获取到的用户信息:', userInfo);
+            if (userInfo) {
+                try {
+                    const user = JSON.parse(userInfo);
+                    console.log('解析后的用户对象:', user);
+                    const currentUserEl = document.getElementById('currentUser');
+                    console.log('用户元素:', currentUserEl);
+                    if (currentUserEl && user.username) {
+                        currentUserEl.textContent = user.username;
+                        console.log('用户名已更新为:', user.username);
+                    } else {
+                        console.warn('用户信息不完整');
+                        redirectToLogin();
+                    }
+                } catch (e) {
+                    console.error('解析用户信息失败:', e);
+                    redirectToLogin();
+                }
+            } else {
+                console.warn('未找到用户信息，重定向到登录');
+                redirectToLogin();
+            }
+        }
+
+        // 重定向到登录页面
+        function redirectToLogin() {
+            window.location.href = '/index.html';
+        }
+
+        // 删除用户
+        async function deleteUser(uid) {
+            if (!confirm('确定要删除该用户吗？此操作不可恢复！')) {
+                return;
+            }
+            
+            try {
+                const response = await axios.delete(`/api/user/${uid}`);
+                if (response.data.code === 200) {
+                    alert('删除成功');
+                    fetchUsers(currentPage, searchKeyword);
+                } else {
+                    alert('删除失败: ' + (response.data.message || '未知错误'));
+                }
+            } catch (error) {
+                console.error('删除用户失败:', error);
+                if (error.response && error.response.data) {
+                    alert(error.response.data.message || '删除失败');
+                } else {
+                    alert('删除失败，请检查网络连接');
+                }
+            }
+        }
+
+        // 搜索用户
+        async function searchUsers() {
+            const keyword = document.getElementById('searchInput').value.trim();
+            fetchUsers(1, keyword);
+        }
+
+        // 清空搜索
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            fetchUsers(1, '');
+        }
+
+        // 显示添加用户模态框
+        function showAddModal() {
+            document.getElementById('modalTitle').textContent = '添加用户';
+            document.getElementById('userId').value = '';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('userType').value = '2';
+            document.getElementById('userModal').classList.remove('hidden');
+        }
+
+        // 显示编辑用户模态框
+        function showEditModal(uid) {
+            const user = users.find(u => u.uid === uid);
+            if (!user) {
+                alert('未找到该用户');
+                return;
+            }
+            
+            document.getElementById('modalTitle').textContent = '编辑用户';
+            document.getElementById('userId').value = user.uid;
+            document.getElementById('username').value = user.username;
+            document.getElementById('password').value = user.password;
+            document.getElementById('email').value = user.email;
+            document.getElementById('userType').value = user.type;
+            document.getElementById('userModal').classList.remove('hidden');
+        }
+
+        // 关闭模态框
+        function closeModal() {
+            document.getElementById('userModal').classList.add('hidden');
+            document.getElementById('userForm').reset();
+        }
+
+        // 保存用户（添加或更新）
+        async function saveUser(event) {
+            event.preventDefault();
+            
+            const uid = document.getElementById('userId').value;
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const email = document.getElementById('email').value.trim();
+            const type = document.getElementById('userType').value;
+            
+            if (!username || !password || !email) {
+                alert('请填写所有必填字段');
+                return;
+            }
+            
+            const userData = {
+                username,
+                password,
+                email,
+                type,
+                status: 1  // 默认启用状态
+            };
+            
+            if (uid) {
+                userData.uid = parseInt(uid);
+            }
+            
+            try {
+                let response;
+                if (uid) {
+                    response = await axios.put('/api/user', userData);
+                } else {
+                    response = await axios.post('/api/user', userData);
+                }
+                
+                if (response.data.code === 200) {
+                    alert(uid ? '更新成功' : '添加成功');
+                    closeModal();
+                    fetchUsers(1, searchKeyword);
+                } else {
+                    alert((uid ? '更新' : '添加') + '失败: ' + (response.data.message || '未知错误'));
+                }
+            } catch (error) {
+                console.error('保存用户失败:', error);
+                if (error.response && error.response.data) {
+                    alert(error.response.data.message || (uid ? '更新失败' : '添加失败'));
+                } else {
+                    alert((uid ? '更新' : '添加') + '失败，请检查网络连接');
+                }
+            }
+        }
+
+        // 绑定表单提交事件
+        document.getElementById('userForm').addEventListener('submit', saveUser);
+
+        // 页面加载时初始化
+        window.addEventListener('DOMContentLoaded', function() {
+            updateCurrentUser();
+            fetchUsers(1, '');
+        });
+    </script>
+</body>
+</html>

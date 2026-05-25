@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>嘉庚学院 - 登录</title>
+    <link href="/css/styles.css" rel="stylesheet">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-600 bg-[length:400%_400%] animate-gradient flex items-center justify-center p-4 relative overflow-hidden font-sans">
+    <!-- 背景装饰 -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-10 left-10 w-32 h-32 bg-cyan-300/20 rounded-full blur-xl animate-float"></div>
+        <div class="absolute bottom-20 right-20 w-48 h-48 bg-blue-400/20 rounded-full blur-xl animate-float-delayed"></div>
+        <div class="absolute top-1/2 left-1/4 w-24 h-24 bg-indigo-400/20 rounded-full blur-xl animate-float"></div>
+    </div>
+
+    <!-- 登录卡片 -->
+    <div class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-10 w-full max-w-md relative z-10 border border-white/20">
+        <!-- Logo/标题区域 -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-2xl shadow-lg mb-4 transform hover:scale-110 transition-transform duration-300">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+            </div>
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent mb-2">
+                欢迎登录
+            </h1>
+            <p class="text-gray-600 text-sm">进入未来科技世界</p>
+        </div>
+
+        <!-- 错误消息 -->
+        <div id="errorMessage" class="hidden mb-6 p-4 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-xl shadow-lg animate-shake">
+            <div class="flex items-center gap-2">
+                <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-sm font-medium"></span>
+            </div>
+        </div>
+        
+        <!-- 成功消息 -->
+        <div id="successMessage" class="hidden mb-6 p-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-xl shadow-lg">
+            <div class="flex items-center gap-2">
+                <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-sm font-medium"></span>
+            </div>
+        </div>
+
+        <!-- 登录表单 -->
+        <form id="loginForm" class="space-y-6">
+            <!-- 用户名输入框 -->
+            <div class="space-y-2">
+                <label for="username" class="block text-sm font-semibold text-gray-700">
+                    用户名
+                </label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <input type="text" 
+                           id="username" 
+                           name="username" 
+                           placeholder="请输入用户名" 
+                           required
+                           value=""
+                           class="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:border-cyan-500 focus:outline-none focus:ring-4 focus:ring-cyan-100 transition-all duration-300 hover:border-gray-300">
+                </div>
+            </div>
+
+            <!-- 密码输入框 -->
+            <div class="space-y-2">
+                <label for="password" class="block text-sm font-semibold text-gray-700">
+                    密码
+                </label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <input type="password" 
+                           id="password" 
+                           name="password" 
+                           placeholder="请输入密码" 
+                           required
+                           class="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:border-cyan-500 focus:outline-none focus:ring-4 focus:ring-cyan-100 transition-all duration-300 hover:border-gray-300">
+                </div>
+            </div>
+
+            <!-- 登录按钮 -->
+            <button type="submit" 
+                    class="group w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-cyan-300">
+                <span class="flex items-center justify-center gap-2">
+                    登 录
+                    <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
+                </span>
+            </button>
+        </form>
+
+        <!-- 注册链接 -->
+        <div class="mt-8 text-center">
+            <p class="text-gray-600 text-sm">
+                还没有账号？
+                <a href="/page/register.html" class="font-semibold text-cyan-600 hover:text-blue-600 transition-colors duration-300 hover:underline">
+                    立即注册
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <!-- 优先使用CDN，加载失败时自动切换到本地文件 -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.6.2/axios.min.js"></script>
+    <script>
+        // 检查 axios 是否加载成功，如果失败则加载本地文件
+        if (typeof axios === 'undefined') {
+            document.write('<script src="/js/axios.min.js"><\/script>');
+            console.log('CDN加载失败，已切换到本地axios文件');
+        }
+    </script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await axios.post('/api/auth/login', {
+                    username: username,
+                    password: password
+                });
+
+                const result = response.data;
+                
+                if (result.success) {
+                    // 将用户信息存储到本地存储
+                    localStorage.setItem('currentUser', JSON.stringify(result.data));
+                    console.log('用户信息已存储:', result.data);
+                    window.location.href = '/page/home.html';
+                } else {
+                    document.getElementById('successMessage').classList.add('hidden');
+                    document.getElementById('errorMessage').querySelector('span').textContent = result.message;
+                    document.getElementById('errorMessage').classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('登录失败:', error);
+                document.getElementById('successMessage').classList.add('hidden');
+                document.getElementById('errorMessage').querySelector('span').textContent = '登录失败，请检查网络连接';
+                document.getElementById('errorMessage').classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
