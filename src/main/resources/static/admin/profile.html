@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心 - 嘉庚学院管理系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f7fa;
+            min-height: 100vh;
+        }
+
+        /* 顶部导航栏 */
+        header {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            padding: 16px 32px;
+            box-shadow: 0 2px 10px rgba(99, 102, 241, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo svg {
+            width: 22px;
+            height: 22px;
+            fill: white;
+        }
+        .system-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: white;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+        }
+        .user-info svg {
+            width: 24px;
+            height: 24px;
+        }
+        .btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        .btn-white {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .btn-white:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        /* 主体内容 */
+        .main-content {
+            display: flex;
+            min-height: calc(100vh - 72px);
+        }
+
+        /* 侧边栏 */
+        .sidebar {
+            width: 240px;
+            background: white;
+            border-right: 1px solid #e5e7eb;
+            padding: 24px 0;
+        }
+        .sidebar-menu {
+            list-style: none;
+            padding: 0 16px;
+        }
+        .sidebar-menu li {
+            margin-bottom: 4px;
+        }
+        .sidebar-menu button {
+            width: 100%;
+            padding: 12px 16px;
+            background: none;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .sidebar-menu button:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        .sidebar-menu button.active {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+        }
+        .sidebar-menu button svg {
+            width: 18px;
+            height: 18px;
+        }
+        .menu-title {
+            padding: 12px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 16px 0 8px;
+        }
+
+        /* 主内容区域 */
+        .content {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+        }
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+        .page-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 32px;
+        }
+
+        /* 卡片样式 */
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin-bottom: 24px;
+        }
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        .card-content {
+            padding: 24px;
+        }
+
+        /* 用户信息卡片 */
+        .profile-card {
+            display: flex;
+            gap: 24px;
+            padding: 24px;
+        }
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .profile-avatar svg {
+            width: 60px;
+            height: 60px;
+            fill: white;
+        }
+        .profile-details {
+            flex: 1;
+        }
+        .profile-name {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+        .profile-role {
+            display: inline-block;
+            padding: 4px 12px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        .profile-stats {
+            display: flex;
+            gap: 32px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        /* 表单样式 */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s;
+            background: white;
+        }
+        .form-input:focus {
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            border-color: #6366f1;
+        }
+        .form-input:read-only {
+            background: #f9fafb;
+            cursor: not-allowed;
+            color: #6b7280;
+        }
+        .btn-submit {
+            padding: 12px 32px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        /* 密码表单 */
+        .password-form .form-group {
+            max-width: 400px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .profile-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            .profile-stats {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header>
+        <div class="header-left">
+            <div class="logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+            </div>
+            <span class="system-title">嘉庚学院管理系统</span>
+        </div>
+        <div class="header-right">
+            <div class="user-info">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+                <span id="header-username">Admin</span>
+            </div>
+            <button onclick="goBack()" class="btn btn-white">返回首页</button>
+            <button onclick="logout()" class="btn btn-danger">退出</button>
+        </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <div class="main-content">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li><button id="menu-profile" class="active" onclick="showSection('profile')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    个人资料
+                </button></li>
+                <li><button id="menu-settings" onclick="showSection('settings')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                    修改密码
+                </button></li>
+            </ul>
+        </aside>
+
+        <!-- 主内容区域 -->
+        <main class="content">
+            <h1 class="page-title">个人中心</h1>
+            <p class="page-subtitle">管理您的个人资料和账户设置</p>
+
+            <!-- 个人信息卡片 -->
+            <div id="section-profile" class="card">
+                <div class="card-header">
+                    <h2 class="card-title">基本信息</h2>
+                </div>
+                <div class="card-content">
+                    <div class="profile-card">
+                        <div class="profile-avatar">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                        </div>
+                        <div class="profile-details">
+                            <h3 id="profile-name" class="profile-name">Admin</h3>
+                            <span id="profile-role-badge" class="profile-role">管理员</span>
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value">1</div>
+                                    <div class="stat-label">账户类型</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">0</div>
+                                    <div class="stat-label">课程数量</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">0</div>
+                                    <div class="stat-label">学生数量</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 编辑表单 -->
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">用户名</label>
+                            <input type="text" id="input-username" class="form-input" placeholder="请输入用户名">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">邮箱</label>
+                            <input type="email" id="input-email" class="form-input" placeholder="请输入邮箱">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">用户类型</label>
+                            <input type="text" id="input-type" class="form-input" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">用户ID</label>
+                            <input type="text" id="input-id" class="form-input" readonly>
+                        </div>
+                    </div>
+                    <button onclick="updateProfile()" class="btn-submit">保存修改</button>
+                </div>
+            </div>
+
+            <!-- 修改密码卡片 -->
+            <div id="section-settings" class="card" style="display: none;">
+                <div class="card-header">
+                    <h2 class="card-title">修改密码</h2>
+                </div>
+                <div class="card-content password-form">
+                    <div class="form-group">
+                        <label class="form-label">原密码</label>
+                        <input type="password" id="input-old-password" class="form-input" placeholder="请输入原密码">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">新密码</label>
+                        <input type="password" id="input-new-password" class="form-input" placeholder="请输入新密码">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">确认新密码</label>
+                        <input type="password" id="input-confirm-password" class="form-input" placeholder="请确认新密码">
+                    </div>
+                    <button onclick="updatePassword()" class="btn-submit">修改密码</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 引入 Axios -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.6.2/axios.min.js"></script>
+    <script>
+        // 配置 Axios 发送 Cookie
+        axios.defaults.withCredentials = true;
+        
+        // 页面加载时获取用户信息
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchProfile();
+        });
+
+        // 获取个人信息
+        function fetchProfile() {
+            axios.get('/api/user/profile')
+                .then(response => {
+                    if (response.data.code === 200) {
+                        const data = response.data.data;
+                        document.getElementById('header-username').textContent = data.username;
+                        document.getElementById('profile-name').textContent = data.username;
+                        document.getElementById('profile-role-badge').textContent = data.typeName;
+                        document.getElementById('input-username').value = data.username;
+                        document.getElementById('input-email').value = data.email || '';
+                        document.getElementById('input-type').value = data.typeName;
+                        document.getElementById('input-id').value = data.id || '';
+                    } else {
+                        alert('请先登录');
+                        window.location.href = '/index.html';
+                    }
+                })
+                .catch(error => {
+                    console.error('获取个人信息失败:', error);
+                    alert('请先登录');
+                    window.location.href = '/index.html';
+                });
+        }
+
+        // 显示指定区域
+        function showSection(sectionName) {
+            // 更新侧边栏菜单状态
+            document.getElementById('menu-profile').classList.remove('active');
+            document.getElementById('menu-settings').classList.remove('active');
+            document.getElementById('menu-' + sectionName).classList.add('active');
+            
+            // 显示/隐藏对应区域
+            document.getElementById('section-profile').style.display = sectionName === 'profile' ? 'block' : 'none';
+            document.getElementById('section-settings').style.display = sectionName === 'settings' ? 'block' : 'none';
+        }
+
+        // 更新个人信息
+        function updateProfile() {
+            const username = document.getElementById('input-username').value;
+            const email = document.getElementById('input-email').value;
+            
+            if (!username.trim()) {
+                alert('请输入用户名');
+                return;
+            }
+            
+            axios.put('/api/user/profile', { username, email })
+                .then(response => {
+                    if (response.data.code === 200) {
+                        alert('更新成功');
+                        document.getElementById('header-username').textContent = username;
+                        document.getElementById('profile-name').textContent = username;
+                    } else {
+                        alert(response.data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('更新失败:', error);
+                    alert('更新失败，请稍后重试');
+                });
+        }
+
+        // 修改密码
+        function updatePassword() {
+            const oldPassword = document.getElementById('input-old-password').value;
+            const newPassword = document.getElementById('input-new-password').value;
+            const confirmPassword = document.getElementById('input-confirm-password').value;
+            
+            if (!oldPassword || !newPassword || !confirmPassword) {
+                alert('请填写所有字段');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                alert('两次输入的新密码不一致');
+                return;
+            }
+            
+            axios.put('/api/user/password', { oldPassword, newPassword })
+                .then(response => {
+                    if (response.data.code === 200) {
+                        alert('密码修改成功，请重新登录');
+                        logout();
+                    } else {
+                        alert(response.data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('修改密码失败:', error);
+                    alert('修改密码失败，请稍后重试');
+                });
+        }
+
+        // 返回首页
+        function goBack() {
+            window.location.href = '/page/home.html';
+        }
+
+        // 退出登录
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = '/index.html';
+        }
+    </script>
+</body>
+</html>

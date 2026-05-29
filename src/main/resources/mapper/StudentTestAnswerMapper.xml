@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xujc.mvcpro.mapper.StudentTestAnswerMapper">
+
+    <insert id="insert" parameterType="com.xujc.mvcpro.pojo.StudentTestAnswer" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO student_test_answer (student_id, test_id, question_id, answer, score, status, submit_time)
+        VALUES (#{studentId}, #{testId}, #{questionId}, #{answer}, #{score}, #{status}, NOW())
+    </insert>
+
+    <insert id="batchInsert">
+        INSERT INTO student_test_answer (student_id, test_id, question_id, answer, score, status, submit_time)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.studentId}, #{item.testId}, #{item.questionId}, #{item.answer}, #{item.score}, #{item.status}, NOW())
+        </foreach>
+    </insert>
+
+    <update id="updateScore">
+        UPDATE student_test_answer 
+        SET score = #{score}, status = 2, grade_time = NOW() 
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectByTestId" resultType="com.xujc.mvcpro.pojo.StudentTestAnswer">
+        SELECT * FROM student_test_answer WHERE test_id = #{testId} ORDER BY student_id, question_id
+    </select>
+
+    <select id="selectByTestIdAndStudentId" resultType="com.xujc.mvcpro.pojo.StudentTestAnswer">
+        SELECT * FROM student_test_answer WHERE test_id = #{testId} AND student_id = #{studentId} ORDER BY question_id
+    </select>
+
+    <select id="selectTestResults" resultType="map">
+        SELECT 
+            a.student_id, 
+            u.username,
+            COUNT(*) as total_questions,
+            SUM(CASE WHEN a.status = 1 THEN a.score ELSE 0 END) as auto_score,
+            SUM(CASE WHEN a.status = 2 THEN a.score ELSE 0 END) as manual_score,
+            MAX(a.submit_time) as submit_time,
+            MIN(a.status) as min_status
+        FROM student_test_answer a
+        LEFT JOIN user u ON a.student_id = u.uid
+        WHERE a.test_id = #{testId}
+        GROUP BY a.student_id, u.username
+        ORDER BY a.student_id
+    </select>
+
+    <select id="countSubmittedStudents" resultType="int">
+        SELECT COUNT(DISTINCT student_id) FROM student_test_answer WHERE test_id = #{testId}
+    </select>
+
+    <select id="selectByStudentId" resultType="com.xujc.mvcpro.pojo.StudentTestAnswer">
+        SELECT * FROM student_test_answer WHERE student_id = #{studentId} ORDER BY test_id, question_id
+    </select>
+
+    <!-- 统计未批改人数（存在status=0的记录的学生） -->
+    <select id="countUngradedStudents" parameterType="Long" resultType="int">
+        SELECT COUNT(DISTINCT student_id) FROM student_test_answer WHERE test_id = #{testId} AND status = 0
+    </select>
+
+</mapper>

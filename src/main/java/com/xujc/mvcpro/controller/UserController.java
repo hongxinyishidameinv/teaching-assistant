@@ -88,11 +88,20 @@ public class UserController {
 
     @PutMapping("/status")
     public ApiResponse updateUserStatus(@RequestParam Integer uid, @RequestParam Integer status) {
-        boolean result = userService.updateUserStatus(uid, status);
-        if (result) {
-            return ApiResponse.ok(status == 1 ? "启用成功" : "禁用成功", null);
+        try {
+            System.out.println("接收到状态更新请求: uid=" + uid + ", status=" + status);
+            
+            boolean result = userService.updateUserStatus(uid, status);
+            
+            if (result) {
+                return ApiResponse.ok(status == 1 ? "启用成功" : "禁用成功", null);
+            }
+            return ApiResponse.error(ResponseCode.INTERNAL_ERROR, "状态更新失败");
+        } catch (Exception e) {
+            System.out.println("状态更新异常: " + e.getMessage());
+            e.printStackTrace();
+            return ApiResponse.error(ResponseCode.INTERNAL_ERROR, "状态更新失败: " + e.getMessage());
         }
-        return ApiResponse.error(ResponseCode.INTERNAL_ERROR, "状态更新失败");
     }
 
 }

@@ -4,6 +4,7 @@ import com.xujc.mvcpro.common.ApiResponse;
 import com.xujc.mvcpro.common.ResponseCode;
 import com.xujc.mvcpro.pojo.User;
 import com.xujc.mvcpro.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class AuthController {
     private UserService userService;
 
     @PostMapping("/login")
-    public ApiResponse login(@RequestBody Map<String, String> request) {
+    public ApiResponse login(@RequestBody Map<String, String> request, HttpSession session) {
         String username = request.get("username");
         String password = request.get("password");
         
@@ -30,6 +31,9 @@ public class AuthController {
         }
         
         User user = userService.login(username, password);
+        
+        // 将用户信息存入 Session
+        session.setAttribute("user", user);
         
         Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("uid", user.getUid());

@@ -50,6 +50,9 @@ public interface UserMapper {
     @Select("select count(*) from user")
     int countUsers();
 
+    @Select("select count(*) from user where type = #{type}")
+    int countByType(@Param("type") String type);
+
     @Select("select * from user where username like #{keyword} limit #{offset}, #{pageSize}")
     List<User> searchUsersByPage(@Param("keyword") String keyword, @Param("offset") Integer offset, @Param("pageSize") Integer pageSize);
 

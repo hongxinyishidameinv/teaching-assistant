@@ -21,6 +21,10 @@ public class UserService {
         if (user == null) {
             throw new BusinessException(ResponseCode.UNAUTHORIZED, "用户名或密码错误");
         }
+        // 检查用户状态
+        if (user.getStatus() != null && user.getStatus() == 0) {
+            throw new BusinessException(ResponseCode.FORBIDDEN, "您的账号已被禁用，请联系管理员");
+        }
         return user;
     }
 
@@ -89,9 +93,21 @@ public class UserService {
     }
 
     public boolean updateUserStatus(Integer uid, Integer status) {
+        if (uid == null || status == null) {
+            throw new BusinessException(ResponseCode.BAD_REQUEST, "参数不完整");
+        }
         User existingUser = userMapper.findByIdWithStatus(uid);
         if (existingUser == null) {
             throw new BusinessException(ResponseCode.NOT_FOUND, "用户不存在");
+        }
+        // 获取用户类型，处理 null 情况
+        String userType = existingUser.getType();
+        if (userType == null) {
+            userType = "2"; // 默认视为学生
+        }
+        // 管理员不能被禁用
+        if ("0".equals(userType) && status == 0) {
+            throw new BusinessException(ResponseCode.FORBIDDEN, "管理员账号不能被禁用");
         }
         int result = userMapper.updateUserStatus(uid, status);
         return result > 0;

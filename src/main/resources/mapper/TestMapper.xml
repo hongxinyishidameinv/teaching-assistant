@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xujc.mvcpro.mapper.TestMapper">
+    
+    <insert id="insert" parameterType="com.xujc.mvcpro.pojo.Test" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO test (title, course_id, total_score, duration, start_time, end_time, status, create_time)
+        VALUES (#{title}, #{courseId}, #{totalScore}, #{duration}, #{startTime}, #{endTime}, #{status}, NOW())
+    </insert>
+    
+    <update id="update" parameterType="com.xujc.mvcpro.pojo.Test">
+        UPDATE test SET
+        title = #{title},
+        course_id = #{courseId},
+        total_score = #{totalScore},
+        duration = #{duration},
+        start_time = #{startTime},
+        end_time = #{endTime},
+        status = #{status}
+        WHERE id = #{id}
+    </update>
+    
+    <delete id="deleteById" parameterType="Long">
+        DELETE FROM test WHERE id = #{id}
+    </delete>
+    
+    <select id="selectById" parameterType="Long" resultType="com.xujc.mvcpro.pojo.Test">
+        SELECT * FROM test WHERE id = #{id}
+    </select>
+    
+    <select id="selectPage" resultType="com.xujc.mvcpro.pojo.Test">
+        SELECT t.*, c.course_name AS courseName FROM test t
+        LEFT JOIN course c ON t.course_id = c.id
+        WHERE 1=1
+        <if test="courseId != null">AND t.course_id = #{courseId}</if>
+        ORDER BY t.create_time DESC
+        LIMIT #{offset}, #{size}
+    </select>
+    
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM test
+        WHERE 1=1
+        <if test="courseId != null">AND course_id = #{courseId}</if>
+    </select>
+    
+    <select id="selectByCourseId" parameterType="Long" resultType="com.xujc.mvcpro.pojo.Test">
+        SELECT * FROM test WHERE course_id = #{courseId} ORDER BY create_time DESC
+    </select>
+    
+    <!-- 根据学生ID查询测试列表 -->
+    <select id="findTestsByStudentId" parameterType="Integer" resultType="com.xujc.mvcpro.pojo.Test">
+        SELECT t.*, c.course_name AS courseName
+        FROM test t
+        LEFT JOIN course c ON t.course_id = c.id
+        WHERE t.course_id IN (
+            SELECT sc.course_id 
+            FROM student_course sc 
+            WHERE sc.student_id = #{studentId}
+        )
+        ORDER BY t.start_time DESC
+    </select>
+    
+    <!-- 根据题目ID查询题目详情 -->
+    <select id="findQuestionById" parameterType="Integer" resultType="map">
+        SELECT * FROM question WHERE id = #{questionId}
+    </select>
+    
+    <!-- 统计课程学生数 -->
+    <select id="countCourseStudents" parameterType="Long" resultType="int">
+        SELECT COUNT(*) FROM student_course WHERE course_id = #{courseId}
+    </select>
+</mapper>
