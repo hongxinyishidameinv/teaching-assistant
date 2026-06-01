@@ -48,11 +48,21 @@ public class CourseController {
 
     @PostMapping
     public ApiResponse addCourse(@RequestBody Course course) {
+        course.setCourseCode(courseService.generateUniqueCourseCode());
         boolean success = courseService.addCourse(course);
         if (success) {
             return ApiResponse.ok("添加成功", null);
         }
         return ApiResponse.error(500, "添加失败");
+    }
+
+    @GetMapping("/code/{courseCode}")
+    public ApiResponse getCourseByCode(@PathVariable String courseCode) {
+        Course course = courseService.getCourseByCode(courseCode);
+        if (course == null) {
+            return ApiResponse.error(404, "加课码无效");
+        }
+        return ApiResponse.ok("查询成功", course);
     }
 
     @PutMapping

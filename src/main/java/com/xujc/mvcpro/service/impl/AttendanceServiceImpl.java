@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,5 +50,26 @@ public class AttendanceServiceImpl implements AttendanceService {
     @Override
     public int getAttendanceCount(Long courseId, Integer studentId, String studentName, LocalDate startDate, LocalDate endDate, Integer status) {
         return attendanceMapper.count(courseId, studentId, studentName, startDate, endDate, status);
+    }
+
+    @Override
+    public List<Attendance> getStudentAttendanceList(Integer studentId, Long courseId, LocalDate startDate, LocalDate endDate, Integer status, int page, int size) {
+        int offset = (page - 1) * size;
+        return attendanceMapper.selectByStudentId(studentId, courseId, startDate, endDate, status, offset, size);
+    }
+
+    @Override
+    public int getStudentAttendanceCount(Integer studentId, Long courseId, LocalDate startDate, LocalDate endDate, Integer status) {
+        return attendanceMapper.countByStudentId(studentId, courseId, startDate, endDate, status);
+    }
+
+    @Override
+    public Map<String, Integer> getStudentAttendanceStats(Integer studentId) {
+        Map<String, Integer> stats = new HashMap<>();
+        stats.put("normal", attendanceMapper.countByStudentIdAndStatus(studentId, 1));
+        stats.put("late", attendanceMapper.countByStudentIdAndStatus(studentId, 2));
+        stats.put("leave", attendanceMapper.countByStudentIdAndStatus(studentId, 3));
+        stats.put("absent", attendanceMapper.countByStudentIdAndStatus(studentId, 4));
+        return stats;
     }
 }

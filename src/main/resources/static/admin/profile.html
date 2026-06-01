@@ -12,15 +12,16 @@
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f5f7fa;
+            background-color: #0f172a;
+            color: #e2e8f0;
             min-height: 100vh;
         }
 
         /* 顶部导航栏 */
         header {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            background: linear-gradient(135deg, #06b6d4, #3b82f6, #8b5cf6);
             padding: 16px 32px;
-            box-shadow: 0 2px 10px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 2px 10px rgba(6, 182, 212, 0.3);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -101,8 +102,8 @@
         /* 侧边栏 */
         .sidebar {
             width: 240px;
-            background: white;
-            border-right: 1px solid #e5e7eb;
+            background: #1e293b;
+            border-right: 1px solid #334155;
             padding: 24px 0;
         }
         .sidebar-menu {
@@ -120,7 +121,7 @@
             border-radius: 8px;
             font-size: 14px;
             font-weight: 500;
-            color: #6b7280;
+            color: #94a3b8;
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
@@ -128,8 +129,8 @@
             gap: 10px;
         }
         .sidebar-menu button:hover {
-            background: #f3f4f6;
-            color: #374151;
+            background: #334155;
+            color: #f1f5f9;
         }
         .sidebar-menu button.active {
             background: linear-gradient(135deg, #6366f1, #8b5cf6);
@@ -143,7 +144,7 @@
             padding: 12px 16px;
             font-size: 12px;
             font-weight: 600;
-            color: #9ca3af;
+            color: #64748b;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin: 16px 0 8px;
@@ -154,29 +155,31 @@
             flex: 1;
             padding: 32px;
             overflow-y: auto;
+            background: #0f172a;
         }
         .page-title {
             font-size: 24px;
             font-weight: 600;
-            color: #1f2937;
+            color: #f8fafc;
             margin-bottom: 8px;
         }
         .page-subtitle {
             font-size: 14px;
-            color: #6b7280;
+            color: #94a3b8;
             margin-bottom: 32px;
         }
 
         /* 卡片样式 */
         .card {
-            background: white;
+            background: #1e293b;
             border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
             margin-bottom: 24px;
+            border: 1px solid #334155;
         }
         .card-header {
             padding: 20px 24px;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid #334155;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -184,7 +187,7 @@
         .card-title {
             font-size: 16px;
             font-weight: 600;
-            color: #1f2937;
+            color: #f1f5f9;
         }
         .card-content {
             padding: 24px;
@@ -217,7 +220,7 @@
         .profile-name {
             font-size: 24px;
             font-weight: 600;
-            color: #1f2937;
+            color: #f8fafc;
             margin-bottom: 4px;
         }
         .profile-role {
@@ -232,20 +235,27 @@
         }
         .profile-stats {
             display: flex;
-            gap: 32px;
+            gap: 24px;
         }
         .stat-item {
             text-align: center;
+            padding: 16px 24px;
+            background: #0f172a;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            min-width: 120px;
         }
         .stat-value {
-            font-size: 20px;
-            font-weight: 600;
-            color: #1f2937;
+            font-size: 24px;
+            font-weight: 700;
+            color: #f8fafc;
+            display: block;
         }
         .stat-label {
             font-size: 12px;
-            color: #6b7280;
+            color: #94a3b8;
             margin-top: 4px;
+            display: block;
         }
 
         /* 表单样式 */
@@ -261,27 +271,26 @@
             display: block;
             font-size: 14px;
             font-weight: 500;
-            color: #374151;
+            color: #cbd5e1;
             margin-bottom: 8px;
         }
         .form-input {
             width: 100%;
             padding: 12px 16px;
-            border: 2px solid #e5e7eb;
+            border: 2px solid #334155;
             border-radius: 10px;
             font-size: 14px;
             outline: none;
             transition: all 0.3s;
-            background: white;
+            background: #0f172a;
+            color: #f1f5f9;
         }
         .form-input:focus {
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
             border-color: #6366f1;
         }
-        .form-input:read-only {
-            background: #f9fafb;
-            cursor: not-allowed;
-            color: #6b7280;
+        .form-input::placeholder {
+            color: #64748b;
         }
         .btn-submit {
             padding: 12px 32px;
@@ -293,16 +302,186 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
         }
         .btn-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+        }
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
         /* 密码表单 */
         .password-form .form-group {
-            max-width: 400px;
+            max-width: 450px;
+        }
+
+        /* 输入组 */
+        .input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-group .form-input {
+            flex: 1;
+            padding-right: 45px;
+        }
+
+        .input-icon-btn {
+            position: absolute;
+            right: 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #64748b;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .input-icon-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #f1f5f9;
+        }
+
+        .input-icon-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* 密码强度指示器 */
+        .password-strength {
+            margin-top: 12px;
+            padding: 12px;
+            background-color: #0f172a;
+            border-radius: 8px;
+            border: 1px solid #334155;
+        }
+
+        .strength-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+        }
+
+        .strength-bars {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .strength-bars .bar {
+            flex: 1;
+            height: 8px;
+            border-radius: 4px;
+            background-color: #334155;
+            transition: all 0.3s ease;
+        }
+
+        .strength-bars .bar.weak {
+            background-color: #ef4444;
+        }
+
+        .strength-bars .bar.fair {
+            background-color: #f59e0b;
+        }
+
+        .strength-bars .bar.good {
+            background-color: #22c55e;
+        }
+
+        .strength-bars .bar.strong {
+            background-color: #16a34a;
+        }
+
+        .strength-text {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .strength-text.weak {
+            color: #ef4444;
+        }
+
+        .strength-text.fair {
+            color: #f59e0b;
+        }
+
+        .strength-text.good {
+            color: #22c55e;
+        }
+
+        .strength-text.strong {
+            color: #16a34a;
+        }
+
+        /* 密码要求提示 */
+        .password-requirements {
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .req-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .req-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            background-color: #334155;
+            color: #64748b;
+        }
+
+        .req-item.fulfilled .req-icon {
+            background-color: #22c55e;
+            color: white;
+        }
+
+        .req-item.fulfilled {
+            color: #4ade80;
+        }
+
+        /* 密码匹配指示器 */
+        .match-indicator {
+            margin-top: 8px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .match-indicator.match {
+            color: #22c55e;
+        }
+
+        .match-indicator.no-match {
+            color: #ef4444;
+        }
+
+        .card-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 4px;
+            font-weight: normal;
         }
 
         /* 响应式 */
@@ -394,11 +573,11 @@
                                     <div class="stat-label">账户类型</div>
                                 </div>
                                 <div class="stat-item">
-                                    <div class="stat-value">0</div>
+                                    <div id="stat-course-count" class="stat-value">0</div>
                                     <div class="stat-label">课程数量</div>
                                 </div>
                                 <div class="stat-item">
-                                    <div class="stat-value">0</div>
+                                    <div id="stat-student-count" class="stat-value">0</div>
                                     <div class="stat-label">学生数量</div>
                                 </div>
                             </div>
@@ -432,21 +611,75 @@
             <div id="section-settings" class="card" style="display: none;">
                 <div class="card-header">
                     <h2 class="card-title">修改密码</h2>
+                    <p class="card-subtitle">请确保新密码安全且不易被猜测</p>
                 </div>
                 <div class="card-content password-form">
                     <div class="form-group">
                         <label class="form-label">原密码</label>
-                        <input type="password" id="input-old-password" class="form-input" placeholder="请输入原密码">
+                        <div class="input-group">
+                            <input type="password" id="input-old-password" class="form-input" placeholder="请输入原密码">
+                            <button type="button" class="input-icon-btn" onclick="togglePassword('input-old-password', this)">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="form-label">新密码</label>
-                        <input type="password" id="input-new-password" class="form-input" placeholder="请输入新密码">
+                        <div class="input-group">
+                            <input type="password" id="input-new-password" class="form-input" placeholder="请输入新密码（至少8位，包含字母和数字）" onkeyup="checkPasswordStrength()">
+                            <button type="button" class="input-icon-btn" onclick="togglePassword('input-new-password', this)">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                        <div id="password-strength" class="password-strength">
+                            <div class="strength-label">密码强度：</div>
+                            <div class="strength-bars">
+                                <div class="bar" id="bar1"></div>
+                                <div class="bar" id="bar2"></div>
+                                <div class="bar" id="bar3"></div>
+                                <div class="bar" id="bar4"></div>
+                            </div>
+                            <div id="strength-text" class="strength-text"></div>
+                        </div>
+                        <div class="password-requirements">
+                            <div id="req-length" class="req-item">
+                                <span class="req-icon">✓</span>
+                                <span>至少8个字符</span>
+                            </div>
+                            <div id="req-letter" class="req-item">
+                                <span class="req-icon">✓</span>
+                                <span>包含字母</span>
+                            </div>
+                            <div id="req-number" class="req-item">
+                                <span class="req-icon">✓</span>
+                                <span>包含数字</span>
+                            </div>
+                            <div id="req-special" class="req-item">
+                                <span class="req-icon">✓</span>
+                                <span>包含特殊字符（可选）</span>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="form-label">确认新密码</label>
-                        <input type="password" id="input-confirm-password" class="form-input" placeholder="请确认新密码">
+                        <div class="input-group">
+                            <input type="password" id="input-confirm-password" class="form-input" placeholder="请再次输入新密码" onkeyup="checkPasswordMatch()">
+                            <button type="button" class="input-icon-btn" onclick="togglePassword('input-confirm-password', this)">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                        <div id="password-match" class="match-indicator"></div>
                     </div>
-                    <button onclick="updatePassword()" class="btn-submit">修改密码</button>
+                    <button onclick="updatePassword()" class="btn-submit" id="btn-submit-password">修改密码</button>
                 </div>
             </div>
         </main>
@@ -458,8 +691,39 @@
         // 配置 Axios 发送 Cookie
         axios.defaults.withCredentials = true;
         
+        // 配置 Axios 拦截器，自动添加 JWT Token
+        function setupAxiosInterceptors() {
+            // 请求拦截器：自动添加Token
+            axios.interceptors.request.use(
+                config => {
+                    const token = localStorage.getItem('token');
+                    if (token) {
+                        config.headers['Authorization'] = 'Bearer ' + token;
+                    }
+                    return config;
+                },
+                error => {
+                    return Promise.reject(error);
+                }
+            );
+            
+            // 响应拦截器：处理401未授权
+            axios.interceptors.response.use(
+                response => response,
+                error => {
+                    if (error.response && error.response.status === 401) {
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('currentUser');
+                        window.location.href = '/index.html';
+                    }
+                    return Promise.reject(error);
+                }
+            );
+        }
+        
         // 页面加载时获取用户信息
         document.addEventListener('DOMContentLoaded', function() {
+            setupAxiosInterceptors();
             fetchProfile();
         });
 
@@ -476,6 +740,14 @@
                         document.getElementById('input-email').value = data.email || '';
                         document.getElementById('input-type').value = data.typeName;
                         document.getElementById('input-id').value = data.id || '';
+                        
+                        // 更新统计信息（如果有）
+                        if (data.courseCount !== undefined) {
+                            document.getElementById('stat-course-count').textContent = data.courseCount;
+                        }
+                        if (data.studentCount !== undefined) {
+                            document.getElementById('stat-student-count').textContent = data.studentCount;
+                        }
                     } else {
                         alert('请先登录');
                         window.location.href = '/index.html';
@@ -526,14 +798,142 @@
                 });
         }
 
+        // 切换密码可见性
+        function togglePassword(inputId, button) {
+            const input = document.getElementById(inputId);
+            const svg = button.querySelector('svg');
+            if (input.type === 'password') {
+                input.type = 'text';
+                svg.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-5.95 5.06M15 11a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>';
+            } else {
+                input.type = 'password';
+                svg.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
+            }
+        }
+
+        // 检查密码强度
+        function checkPasswordStrength() {
+            const password = document.getElementById('input-new-password').value;
+            let strength = 0;
+            
+            const lengthOk = password.length >= 8;
+            document.getElementById('req-length').classList.toggle('fulfilled', lengthOk);
+            
+            const letterOk = /[a-zA-Z]/.test(password);
+            document.getElementById('req-letter').classList.toggle('fulfilled', letterOk);
+            
+            const numberOk = /[0-9]/.test(password);
+            document.getElementById('req-number').classList.toggle('fulfilled', numberOk);
+            
+            const specialOk = /[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/.test(password);
+            document.getElementById('req-special').classList.toggle('fulfilled', specialOk);
+            
+            if (lengthOk) strength++;
+            if (letterOk && numberOk) strength++;
+            if (specialOk) strength++;
+            if (password.length >= 12) strength++;
+            
+            const bars = ['bar1', 'bar2', 'bar3', 'bar4'];
+            const textEl = document.getElementById('strength-text');
+            
+            for (let i = 0; i < bars.length; i++) {
+                const bar = document.getElementById(bars[i]);
+                bar.className = 'bar';
+                if (i < strength) {
+                    if (strength === 1) bar.classList.add('weak');
+                    else if (strength === 2) bar.classList.add('fair');
+                    else if (strength === 3) bar.classList.add('good');
+                    else bar.classList.add('strong');
+                }
+            }
+            
+            textEl.className = 'strength-text';
+            if (strength === 0) {
+                textEl.textContent = '';
+            } else if (strength === 1) {
+                textEl.textContent = '弱 - 请使用更复杂的密码';
+                textEl.classList.add('weak');
+            } else if (strength === 2) {
+                textEl.textContent = '一般 - 建议添加数字或特殊字符';
+                textEl.classList.add('fair');
+            } else if (strength === 3) {
+                textEl.textContent = '良好 - 密码强度不错';
+                textEl.classList.add('good');
+            } else {
+                textEl.textContent = '强 - 密码非常安全';
+                textEl.classList.add('strong');
+            }
+            
+            updateSubmitButton();
+        }
+
+        // 检查密码匹配
+        function checkPasswordMatch() {
+            const newPassword = document.getElementById('input-new-password').value;
+            const confirmPassword = document.getElementById('input-confirm-password').value;
+            const matchEl = document.getElementById('password-match');
+            
+            if (!confirmPassword) {
+                matchEl.textContent = '';
+                matchEl.className = 'match-indicator';
+            } else if (newPassword === confirmPassword) {
+                matchEl.textContent = '✓ 密码匹配';
+                matchEl.className = 'match-indicator match';
+            } else {
+                matchEl.textContent = '✗ 两次输入的密码不一致';
+                matchEl.className = 'match-indicator no-match';
+            }
+            
+            updateSubmitButton();
+        }
+
+        // 更新提交按钮状态
+        function updateSubmitButton() {
+            const oldPassword = document.getElementById('input-old-password').value;
+            const newPassword = document.getElementById('input-new-password').value;
+            const confirmPassword = document.getElementById('input-confirm-password').value;
+            const submitBtn = document.getElementById('btn-submit-password');
+            
+            const hasOldPassword = oldPassword.length > 0;
+            const hasNewPassword = newPassword.length >= 8;
+            const hasLetter = /[a-zA-Z]/.test(newPassword);
+            const hasNumber = /[0-9]/.test(newPassword);
+            const passwordsMatch = newPassword === confirmPassword;
+            
+            if (hasOldPassword && hasNewPassword && hasLetter && hasNumber && passwordsMatch) {
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.6';
+                submitBtn.style.cursor = 'not-allowed';
+            }
+        }
+
         // 修改密码
         function updatePassword() {
             const oldPassword = document.getElementById('input-old-password').value;
             const newPassword = document.getElementById('input-new-password').value;
             const confirmPassword = document.getElementById('input-confirm-password').value;
             
-            if (!oldPassword || !newPassword || !confirmPassword) {
-                alert('请填写所有字段');
+            if (!oldPassword) {
+                alert('请输入原密码');
+                return;
+            }
+            
+            if (newPassword.length < 8) {
+                alert('新密码至少需要8个字符');
+                return;
+            }
+            
+            if (!/[a-zA-Z]/.test(newPassword)) {
+                alert('新密码需要包含字母');
+                return;
+            }
+            
+            if (!/[0-9]/.test(newPassword)) {
+                alert('新密码需要包含数字');
                 return;
             }
             
@@ -541,6 +941,11 @@
                 alert('两次输入的新密码不一致');
                 return;
             }
+            
+            const submitBtn = document.getElementById('btn-submit-password');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = '修改中...';
+            submitBtn.disabled = true;
             
             axios.put('/api/user/password', { oldPassword, newPassword })
                 .then(response => {
@@ -554,6 +959,10 @@
                 .catch(error => {
                     console.error('修改密码失败:', error);
                     alert('修改密码失败，请稍后重试');
+                })
+                .finally(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
                 });
         }
 

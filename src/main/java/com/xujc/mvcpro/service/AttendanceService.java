@@ -14,4 +14,10 @@ public interface AttendanceService {
     List<Attendance> getAttendanceList(Long courseId, Integer studentId, String studentName, LocalDate startDate, LocalDate endDate, Integer status, int page, int size);
 
     int getAttendanceCount(Long courseId, Integer studentId, String studentName, LocalDate startDate, LocalDate endDate, Integer status);
+
+    List<Attendance> getStudentAttendanceList(Integer studentId, Long courseId, LocalDate startDate, LocalDate endDate, Integer status, int page, int size);
+
+    int getStudentAttendanceCount(Integer studentId, Long courseId, LocalDate startDate, LocalDate endDate, Integer status);
+
+    Map<String, Integer> getStudentAttendanceStats(Integer studentId);
 }

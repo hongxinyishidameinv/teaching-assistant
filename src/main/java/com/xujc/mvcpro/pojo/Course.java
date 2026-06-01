@@ -17,4 +17,5 @@ public class Course {
     private Integer status;       // 课程状态：0-禁用，1-启用
     private String description;   // 课程描述
     private Boolean selected;     // 是否已选（用于选课页面）
+    private String courseCode;    // 加课码（6位大写字母和数字）
 }

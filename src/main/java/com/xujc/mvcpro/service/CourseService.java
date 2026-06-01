@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class CourseService {
@@ -19,6 +20,42 @@ public class CourseService {
 
     @Autowired
     private com.xujc.mvcpro.mapper.UserMapper userMapper;
+
+    private static final String CODE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private static final int CODE_LENGTH = 6;
+
+    /**
+     * 生成6位加课码（大写字母和数字）
+     */
+    private String generateCourseCode() {
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < CODE_LENGTH; i++) {
+            sb.append(CODE_CHARS.charAt(random.nextInt(CODE_CHARS.length())));
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 生成唯一的加课码
+     */
+    public String generateUniqueCourseCode() {
+        String code;
+        do {
+            code = generateCourseCode();
+        } while (courseMapper.findByCourseCode(code) != null);
+        return code;
+    }
+
+    /**
+     * 根据加课码查询课程
+     */
+    public Course getCourseByCode(String courseCode) {
+        if (courseCode == null || courseCode.trim().isEmpty()) {
+            throw new BusinessException(ResponseCode.BAD_REQUEST, "加课码不能为空");
+        }
+        return courseMapper.findByCourseCode(courseCode.toUpperCase().trim());
+    }
 
     public PageResult<Course> getCoursesByPage(int pageNum, int pageSize) {
         int offset = (pageNum - 1) * pageSize;
@@ -85,5 +122,26 @@ public class CourseService {
     public List<User> getAllTeachers() {
         List<User> allUsers = userMapper.findAllUsers();
         return allUsers.stream().filter(u -> "1".equals(u.getType())).collect(java.util.stream.Collectors.toList());
+    }
+
+    /**
+     * 统计教师的课程数量
+     */
+    public int countCoursesByTeacherId(Integer teacherId) {
+        return courseMapper.countCoursesByTeacherId(teacherId);
+    }
+
+    /**
+     * 统计教师所有课程的学生总数
+     */
+    public int countStudentsByTeacherId(Integer teacherId) {
+        return courseMapper.countStudentsByTeacherId(teacherId);
+    }
+
+    /**
+     * 统计学生已选课程数量
+     */
+    public int countCoursesByStudentId(Integer studentId) {
+        return courseMapper.countCoursesByStudentId(studentId);
     }
 }

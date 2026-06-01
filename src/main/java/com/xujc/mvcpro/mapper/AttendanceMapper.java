@@ -52,4 +52,27 @@ public interface AttendanceMapper {
 
     @Delete("DELETE FROM attendance WHERE course_id = #{courseId} AND attendance_date = #{attendanceDate}")
     int deleteByCourseAndDate(@Param("courseId") Long courseId, @Param("attendanceDate") LocalDate attendanceDate);
+
+    @Select("SELECT a.*, c.course_name AS courseName, u.username AS studentName, u.uid AS studentNo FROM attendance a LEFT JOIN course c ON a.course_id = c.id LEFT JOIN user u ON a.student_id = u.uid WHERE a.student_id = #{studentId} AND (a.course_id = #{courseId} OR #{courseId} IS NULL OR #{courseId} = 0) AND (a.attendance_date >= #{startDate} OR #{startDate} IS NULL) AND (a.attendance_date <= #{endDate} OR #{endDate} IS NULL) AND (a.status = #{status} OR #{status} IS NULL OR #{status} = 0) ORDER BY a.attendance_date DESC, a.create_time DESC LIMIT #{offset}, #{size}")
+    List<Attendance> selectByStudentId(
+            @Param("studentId") Integer studentId,
+            @Param("courseId") Long courseId,
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate,
+            @Param("status") Integer status,
+            @Param("offset") int offset,
+            @Param("size") int size
+    );
+
+    @Select("SELECT COUNT(*) FROM attendance a WHERE a.student_id = #{studentId} AND (a.course_id = #{courseId} OR #{courseId} IS NULL OR #{courseId} = 0) AND (a.attendance_date >= #{startDate} OR #{startDate} IS NULL) AND (a.attendance_date <= #{endDate} OR #{endDate} IS NULL) AND (a.status = #{status} OR #{status} IS NULL OR #{status} = 0)")
+    int countByStudentId(
+            @Param("studentId") Integer studentId,
+            @Param("courseId") Long courseId,
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate,
+            @Param("status") Integer status
+    );
+
+    @Select("SELECT COUNT(*) FROM attendance a WHERE a.student_id = #{studentId} AND a.status = #{status}")
+    int countByStudentIdAndStatus(@Param("studentId") Integer studentId, @Param("status") Integer status);
 }

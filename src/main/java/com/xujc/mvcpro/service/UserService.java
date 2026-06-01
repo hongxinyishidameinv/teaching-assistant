@@ -132,4 +132,13 @@ public class UserService {
         int pages = (int) Math.ceil((double) total / pageSize);
         return new PageResult<>(users, pageNum, pageSize, total, pages);
     }
+
+    /**
+     * 根据用户ID获取用户信息
+     * @param uid 用户ID
+     * @return 用户对象
+     */
+    public User getUserById(Integer uid) {
+        return userMapper.findById(uid);
+    }
 }

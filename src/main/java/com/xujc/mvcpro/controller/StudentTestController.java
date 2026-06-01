@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -221,6 +222,101 @@ public class StudentTestController {
             System.err.println("获取测试结果失败: " + e.getMessage());
             e.printStackTrace();
             return ApiResponse.error(500, "获取测试结果失败: " + e.getMessage());
+        }
+    }
+
+    /**
+     * 获取学生的错题本
+     * GET /api/student/wrong-questions?studentId=xxx
+     */
+    @GetMapping("/wrong-questions")
+    public ApiResponse getWrongQuestions(@RequestParam Integer studentId) {
+        try {
+            System.out.println("===== 获取学生错题本 =====");
+            System.out.println("学生ID: " + studentId);
+
+            // 获取学生的所有答题记录
+            List<StudentTestAnswer> allAnswers = answerMapper.selectByStudentId(studentId);
+            
+            if (allAnswers == null || allAnswers.isEmpty()) {
+                return ApiResponse.ok("暂无错题", new java.util.ArrayList<>());
+            }
+
+            // 按测试分组，获取错题
+            Map<Long, List<StudentTestAnswer>> answersByTest = new HashMap<>();
+            for (StudentTestAnswer answer : allAnswers) {
+                Long testId = answer.getTestId();
+                if (!answersByTest.containsKey(testId)) {
+                    answersByTest.put(testId, new java.util.ArrayList<>());
+                }
+                answersByTest.get(testId).add(answer);
+            }
+
+            List<Map<String, Object>> wrongQuestionsList = new java.util.ArrayList<>();
+            
+            // 用于去重，key是questionId
+            Map<Integer, Map<String, Object>> uniqueQuestions = new HashMap<>();
+
+            // 遍历每个测试
+            for (Map.Entry<Long, List<StudentTestAnswer>> entry : answersByTest.entrySet()) {
+                Long testId = entry.getKey();
+                List<StudentTestAnswer> testAnswers = entry.getValue();
+
+                // 获取测试信息
+                Test test = testMapper.selectById(testId);
+                if (test == null) continue;
+
+                // 遍历该测试的所有答题记录
+                for (StudentTestAnswer answer : testAnswers) {
+                    // 获取题目详情
+                    Map<String, Object> question = testMapper.findQuestionById(answer.getQuestionId());
+                    if (question == null) continue;
+                    
+                    Integer type = (Integer) question.get("type");
+                    Integer questionId = answer.getQuestionId();
+                    
+                    // 判断题：如果这道题还没有添加过，就添加
+                    boolean isWrong = false;
+                    
+                    if (type != null && type == 4) {
+                        // 简答题：得分不满就收录（包括0分）
+                        if (answer.getScore() != null && question.get("score") != null) {
+                            BigDecimal actualScore = BigDecimal.valueOf(answer.getScore());
+                            BigDecimal fullScore = (BigDecimal) question.get("score");
+                            isWrong = actualScore.compareTo(fullScore) < 0; // 实际得分 < 满分
+                        }
+                    } else {
+                        // 客观题（单选、多选、判断）：得分为0才收录
+                        isWrong = answer.getScore() != null && answer.getScore() == 0 && answer.getStatus() == 1;
+                    }
+                    
+                    if (isWrong && !uniqueQuestions.containsKey(questionId)) {
+                        Map<String, Object> wrongQuestion = new HashMap<>();
+                        wrongQuestion.put("testId", testId);
+                        wrongQuestion.put("testName", test.getTitle());
+                        wrongQuestion.put("questionId", questionId);
+                        wrongQuestion.put("questionContent", question.get("content"));
+                        wrongQuestion.put("options", question.get("options"));
+                        wrongQuestion.put("correctAnswer", question.get("answer"));
+                        wrongQuestion.put("studentAnswer", answer.getAnswer());
+                        wrongQuestion.put("type", type);
+                        wrongQuestion.put("score", question.get("score"));
+                        wrongQuestion.put("isCorrect", false); // 错题本中的题目都是答错的
+                        
+                        uniqueQuestions.put(questionId, wrongQuestion);
+                    }
+                }
+            }
+            
+            // 将去重后的题目添加到列表中
+            wrongQuestionsList.addAll(uniqueQuestions.values());
+
+            System.out.println("错题数量: " + wrongQuestionsList.size());
+            return ApiResponse.ok("获取成功", wrongQuestionsList);
+        } catch (Exception e) {
+            System.err.println("获取错题本失败: " + e.getMessage());
+            e.printStackTrace();
+            return ApiResponse.error(500, "获取错题本失败: " + e.getMessage());
         }
     }
 }
